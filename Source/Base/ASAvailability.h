@@ -17,6 +17,7 @@
   #define AS_TLS_AVAILABLE 1
 #endif
 
+// This needs to stay in sync with Weaver
 #ifndef AS_USE_VIDEO
   #define AS_USE_VIDEO 0
 #endif

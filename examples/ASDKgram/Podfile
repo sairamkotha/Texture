@@ -4,16 +4,6 @@ target 'Sample' do
   pod 'Texture/IGListKit', :path => '../..'
   pod 'Texture/PINRemoteImage', :path => '../..'
   pod 'Texture/Yoga', :path => '../..'
-  # pod 'Texture/Video', :path => '../..'
-  # pod 'Weaver', :git => 'git@github.com:TextureGroup/Weaver.git', :branch => 'MSTesting'
+  pod 'Texture/Video', :path => '../..'
   pod 'Weaver', :path => '../../../Weaver'
-end
-
-# TODO: Why is this needed
-post_install do |installer_representation|
-  installer_representation.pods_project.targets.each do |target|
-    target.build_configurations.each do |config|
-      config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] ||= ['$(inherited)', 'AS_USE_VIDEO=1']
-    end
-  end
 end
