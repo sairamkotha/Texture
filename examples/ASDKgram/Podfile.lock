@@ -49,10 +49,13 @@ PODS:
     - SocketRocket (= 0.5.1)
     - Texture (>= 2.3.4)
     - Weaver/Video (= 0.1.2)
+  - Weaver/Core (0.1.2):
+    - SocketRocket (= 0.5.1)
+    - Texture (>= 2.3.4)
   - Weaver/Video (0.1.2):
     - SocketRocket (= 0.5.1)
     - Texture (>= 2.3.4)
-    - Texture/Core
+    - Weaver/Core
   - Yoga (1.6.0)
 
 DEPENDENCIES:
@@ -60,7 +63,6 @@ DEPENDENCIES:
   - Texture/PINRemoteImage (from `../..`)
   - Texture/Yoga (from `../..`)
   - Weaver (from `../../../Weaver`)
-  - Weaver/Video (from `../../../Weaver`)
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
@@ -83,10 +85,10 @@ SPEC CHECKSUMS:
   PINOperation: a6219e6fc9db9c269eb7a7b871ac193bcf400aac
   PINRemoteImage: d6d51c5d2adda55f1ce30c96e850b6c4ebd2856a
   SocketRocket: d57c7159b83c3c6655745cd15302aa24b6bae531
-  Texture: ca7487dac83eb1c914bb25364887595d2cbce1fd
-  Weaver: 3c577e87beb103bef1b78366e19385d7daaa4a20
+  Texture: 732ed8faaebed85a26f8efaf6526868305fc5073
+  Weaver: 7cd8eb685e512dfe6685f30b6d0adce674a55376
   Yoga: 81670877477311136b1b3f69a6307ce62e1c89cf
 
-PODFILE CHECKSUM: f7a9a3ff9983ef7861ab5b2b40f1197accf3c7e3
+PODFILE CHECKSUM: 29f346cbbc8c1f6309da114adf27375ebe6636fc
 
 COCOAPODS: 1.5.3

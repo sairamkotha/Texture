@@ -59,10 +59,10 @@ Pod::Spec.new do |spec|
     yoga.dependency 'Texture/Core'
   end
 
-  spec.subspec 'Video' do |map|
-    map.frameworks = ['AVFoundation', 'CoreMedia']
-    map.xcconfig = { 'GCC_PREPROCESSOR_DEFINITIONS' => '$(inherited) AS_USE_VIDEO=1' }
-    map.dependency 'Texture/Core'
+  spec.subspec 'Video' do |video|
+    video.frameworks = ['AVFoundation', 'CoreMedia']
+    video.xcconfig = { 'GCC_PREPROCESSOR_DEFINITIONS' => '$(inherited) AS_USE_VIDEO=1' }
+    video.dependency 'Texture/Core'
   end 
 
   spec.subspec 'MapKit' do |map|
