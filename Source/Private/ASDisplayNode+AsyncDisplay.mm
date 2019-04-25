@@ -424,7 +424,7 @@ using AS::MutexLocker;
       if (stretchable) {
         ASDisplayNodeSetResizableContents(layer, image);
       } else {
-        layer.contentsScale = self.contentsScale;
+        layer.contentsScale = image.scale;
         layer.contents = (id)image.CGImage;
       }
       [self didDisplayAsyncLayer:self.asyncLayer];
