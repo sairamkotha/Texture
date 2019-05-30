@@ -14,8 +14,6 @@
 
 #define _node (_shouldInvertStrongReference ? _weakNode : _strongNode)
 
-#undef __instanceLock__
-
 @implementation ASNodeController
 {
   ASNodeContext *_nodeContext;

@@ -55,4 +55,19 @@ AS_SUBCLASSING_RESTRICTED
 
 @end
 
+/**
+ * Only here during experimentation.
+ */
+NS_INLINE void ASNodeContextPushNewIfEnabled() {
+  if (ASActivateExperimentalFeature(ASExperimentalNodeContext)) {
+    ASNodeContextPush([[ASNodeContext alloc] init]);
+  }
+}
+
+NS_INLINE void ASNodeContextPopIfEnabled() {
+  if (ASActivateExperimentalFeature(ASExperimentalNodeContext)) {
+    ASNodeContextPop();
+  }
+}
+
 NS_ASSUME_NONNULL_END

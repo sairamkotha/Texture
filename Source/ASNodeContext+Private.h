@@ -11,21 +11,6 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-/**
- * Only here during experimentation.
- */
-NS_INLINE void ASNodeContextPushNewIfEnabled() {
-  if (ASActivateExperimentalFeature(ASExperimentalNodeContext)) {
-    ASNodeContextPush([[ASNodeContext alloc] init]);
-  }
-}
-
-NS_INLINE void ASNodeContextPopIfEnabled() {
-  if (ASActivateExperimentalFeature(ASExperimentalNodeContext)) {
-    ASNodeContextPop();
-  }
-}
-
 @interface ASNodeContext () {
 @package
   AS::RecursiveMutex _mutex;
