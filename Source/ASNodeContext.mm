@@ -1,10 +1,9 @@
 //
-//  ASNodeContext.m
-//  AsyncDisplayKit
+//  ASNodeContext.mm
+//  Texture
 //
-//  Created by Adlai Holler on 5/29/19.
-//  Copyright © 2019 Pinterest. All rights reserved.
-//
+//  Copyright (c) Pinterest, Inc.  All rights reserved.
+//  Licensed under Apache 2.0: http://www.apache.org/licenses/LICENSE-2.0
 
 #import <AsyncDisplayKit/ASNodeContext+Private.h>
 
