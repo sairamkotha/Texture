@@ -1953,9 +1953,9 @@ static NSString * const kReuseIdentifier = @"_ASCollectionReuseIdentifier";
   }
   if (!block && !cell && _asyncDataSourceFlags.collectionNodeNodeForItem) {
     GET_COLLECTIONNODE_OR_RETURN(collectionNode, ^{ return [[ASCellNode alloc] init]; });
-    ASNodeContextPushNewIfEnabled();
+    ASNodeContextPushNew();
     cell = [_asyncDataSource collectionNode:collectionNode nodeForItemAtIndexPath:indexPath];
-    ASNodeContextPopIfEnabled();
+    ASNodeContextPop();
   }
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
@@ -1963,9 +1963,9 @@ static NSString * const kReuseIdentifier = @"_ASCollectionReuseIdentifier";
     block = [_asyncDataSource collectionView:self nodeBlockForItemAtIndexPath:indexPath];
   }
   if (!block && !cell && _asyncDataSourceFlags.collectionViewNodeForItem) {
-    ASNodeContextPushNewIfEnabled();
+    ASNodeContextPushNew();
     cell = [_asyncDataSource collectionView:self nodeForItemAtIndexPath:indexPath];
-    ASNodeContextPopIfEnabled();
+    ASNodeContextPop();
   }
 #pragma clang diagnostic pop
 

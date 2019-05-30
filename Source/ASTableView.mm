@@ -1744,9 +1744,9 @@ static NSString * const kCellReuseIdentifier = @"_ASTableViewCell";
   } else if (_asyncDataSourceFlags.tableNodeNodeForRow) {
     ASCellNode *node = nil;
     if (ASTableNode *tableNode = self.tableNode) {
-      ASNodeContextPushNewIfEnabled();
+      ASNodeContextPushNew();
     	node = [_asyncDataSource tableNode:tableNode nodeForRowAtIndexPath:indexPath];
-      ASNodeContextPopIfEnabled();
+      ASNodeContextPop();
     }
     if ([node isKindOfClass:[ASCellNode class]]) {
       block = ^{
@@ -1760,9 +1760,9 @@ static NSString * const kCellReuseIdentifier = @"_ASTableViewCell";
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
     block = [_asyncDataSource tableView:self nodeBlockForRowAtIndexPath:indexPath];
   } else if (_asyncDataSourceFlags.tableViewNodeForRow) {
-    ASNodeContextPushNewIfEnabled();
+    ASNodeContextPushNew();
     ASCellNode *node = [_asyncDataSource tableView:self nodeForRowAtIndexPath:indexPath];
-    ASNodeContextPopIfEnabled();
+    ASNodeContextPop();
 #pragma clang diagnostic pop
     if ([node isKindOfClass:[ASCellNode class]]) {
       block = ^{

@@ -166,13 +166,13 @@ typedef void (^ASDataControllerSynchronizationBlock)();
 
       unowned ASCollectionElement *element = elements[i];
 
-      ASNodeContextPushNewIfEnabled();
+      ASNodeContextPushNew();
       NSMutableDictionary *dict = [[NSThread currentThread] threadDictionary];
       dict[ASThreadDictMaxConstraintSizeKey] =
           [NSValue valueWithCGSize:element.constrainedSize.max];
       unowned ASCellNode *node = element.node;
       [dict removeObjectForKey:ASThreadDictMaxConstraintSizeKey];
-      ASNodeContextPopIfEnabled();
+      ASNodeContextPop();
 
       // Layout the node if the size range is valid.
       ASSizeRange sizeRange = element.constrainedSize;

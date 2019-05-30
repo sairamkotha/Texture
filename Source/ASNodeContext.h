@@ -15,7 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 @class ASNodeContext;
 
 /**
- * Push the current default context, which will apply to any nodes initialized with `init` instead of `initWithContext:`.
+ * Push the given context, which will apply to any nodes initialized with `init` instead of `initWithContext:`.
  *
  * A default context is provided by the system under the following circumstances:
  * - During the execution of a node block for ASCollectionNode or ASTableNode.
@@ -25,6 +25,12 @@ NS_ASSUME_NONNULL_BEGIN
  * @discussion Generally users will not need to call this function themselves.
  */
 AS_EXTERN void ASNodeContextPush(unowned ASNodeContext *context);
+
+/**
+ * Creates a new context and pushes it. This is useful during experimentation, so that if you aren't in the context
+ * experiment, you won't create a context for no reason.
+ */
+AS_EXTERN void ASNodeContextPushNew(void);
 
 /**
  * Get the current default context, if there is one.
@@ -54,20 +60,5 @@ AS_SUBCLASSING_RESTRICTED
 @interface ASNodeContext : NSObject
 
 @end
-
-/**
- * Only here during experimentation.
- */
-NS_INLINE void ASNodeContextPushNewIfEnabled() {
-  if (ASActivateExperimentalFeature(ASExperimentalNodeContext)) {
-    ASNodeContextPush([[ASNodeContext alloc] init]);
-  }
-}
-
-NS_INLINE void ASNodeContextPopIfEnabled() {
-  if (ASActivateExperimentalFeature(ASExperimentalNodeContext)) {
-    ASNodeContextPop();
-  }
-}
 
 NS_ASSUME_NONNULL_END
