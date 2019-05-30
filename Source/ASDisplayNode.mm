@@ -323,6 +323,9 @@ __attribute__((constructor)) static void ASLoadFrameworkInitializer(void)
     _nodeContext = ctx;
     new (&_mutexOrPtr) AS::MutexOrPointer(&ctx->_mutex);
   } else {
+    ASDisplayNodeAssert(!ASActivateExperimentalFeature(ASExperimentalNodeContext), @"In node context experiment, but no"
+                        "node context. Did you forget to push one before creating your node for an ASViewController?"
+                        "Please report to the maintainers what circumstance this happened in if it seems unusual.");
     new (&_mutexOrPtr) AS::MutexOrPointer(nullptr);
     _mutexOrPtr.get().SetDebugNameWithObject(self);
   }
