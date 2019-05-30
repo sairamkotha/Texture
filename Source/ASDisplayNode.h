@@ -28,7 +28,7 @@ NS_ASSUME_NONNULL_BEGIN
 #define AS_MAX_INTERFACE_STATE_DELEGATES 4
 #endif
 
-@class ASDisplayNode;
+@class ASDisplayNode, ASNodeContext;
 @protocol ASContextTransitioning;
 
 /**
@@ -190,6 +190,11 @@ AS_EXTERN NSInteger const ASDefaultDrawingPriority;
  * @note You will usually NOT call this. See the limitations documented in @c initWithLayerBlock:
  */
 - (void)setLayerBlock:(ASDisplayNodeLayerBlock)layerBlock;
+
+/**
+ * Get the context for this node, if one was set during creation.
+ */
+@property (nullable, readonly) ASNodeContext *nodeContext;
 
 /** 
  * @abstract Returns whether the node is synchronous.

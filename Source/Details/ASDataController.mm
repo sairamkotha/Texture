@@ -26,6 +26,7 @@
 #import <AsyncDisplayKit/ASSignpost.h>
 #import <AsyncDisplayKit/ASMainSerialQueue.h>
 #import <AsyncDisplayKit/ASMutableElementMap.h>
+#import <AsyncDisplayKit/ASNodeContext+Private.h>
 #import <AsyncDisplayKit/ASRangeManagingNode.h>
 #import <AsyncDisplayKit/ASThread.h>
 #import <AsyncDisplayKit/ASTwoDimensionalArrayUtils.h>
@@ -165,11 +166,13 @@ typedef void (^ASDataControllerSynchronizationBlock)();
 
       unowned ASCollectionElement *element = elements[i];
 
+      ASNodeContextPushNewIfEnabled();
       NSMutableDictionary *dict = [[NSThread currentThread] threadDictionary];
       dict[ASThreadDictMaxConstraintSizeKey] =
           [NSValue valueWithCGSize:element.constrainedSize.max];
       unowned ASCellNode *node = element.node;
       [dict removeObjectForKey:ASThreadDictMaxConstraintSizeKey];
+      ASNodeContextPopIfEnabled();
 
       // Layout the node if the size range is valid.
       ASSizeRange sizeRange = element.constrainedSize;

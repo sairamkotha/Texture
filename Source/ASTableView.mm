@@ -24,6 +24,7 @@
 #import <AsyncDisplayKit/ASElementMap.h>
 #import <AsyncDisplayKit/ASInternalHelpers.h>
 #import <AsyncDisplayKit/ASLayout.h>
+#import <AsyncDisplayKit/ASNodeContext+Private.h>
 #import <AsyncDisplayKit/ASTableNode+Beta.h>
 #import <AsyncDisplayKit/ASRangeController.h>
 #import <AsyncDisplayKit/ASEqualityHelpers.h>
@@ -1743,7 +1744,9 @@ static NSString * const kCellReuseIdentifier = @"_ASTableViewCell";
   } else if (_asyncDataSourceFlags.tableNodeNodeForRow) {
     ASCellNode *node = nil;
     if (ASTableNode *tableNode = self.tableNode) {
+      ASNodeContextPushNewIfEnabled();
     	node = [_asyncDataSource tableNode:tableNode nodeForRowAtIndexPath:indexPath];
+      ASNodeContextPopIfEnabled();
     }
     if ([node isKindOfClass:[ASCellNode class]]) {
       block = ^{
@@ -1757,7 +1760,9 @@ static NSString * const kCellReuseIdentifier = @"_ASTableViewCell";
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
     block = [_asyncDataSource tableView:self nodeBlockForRowAtIndexPath:indexPath];
   } else if (_asyncDataSourceFlags.tableViewNodeForRow) {
+    ASNodeContextPushNewIfEnabled();
     ASCellNode *node = [_asyncDataSource tableView:self nodeForRowAtIndexPath:indexPath];
+    ASNodeContextPopIfEnabled();
 #pragma clang diagnostic pop
     if ([node isKindOfClass:[ASCellNode class]]) {
       block = ^{
