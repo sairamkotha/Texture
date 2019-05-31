@@ -25,6 +25,8 @@
 
 #import <AsyncDisplayKit/ASDisplayNode+LayoutSpec.h>
 
+#define __instanceLock__ _mutexOrPtr.get()
+
 #define YOGA_LAYOUT_LOGGING 0
 
 #pragma mark - ASDisplayNode+Yoga
