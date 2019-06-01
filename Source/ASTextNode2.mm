@@ -13,6 +13,7 @@
 #import <deque>
 
 #import <AsyncDisplayKit/_ASDisplayLayer.h>
+#import <AsyncDisplayKit/ASDisplayNode+Ancestry.h>
 #import <AsyncDisplayKit/ASDisplayNode+FrameworkPrivate.h>
 #import <AsyncDisplayKit/ASDisplayNode+Subclasses.h>
 #import <AsyncDisplayKit/ASDisplayNodeExtras.h>
@@ -330,18 +331,9 @@ static NSArray *DefaultLinkAttributeNames() {
   return UIAccessibilityTraitStaticText;
 }
 
-/// Walks up the node tree and searches for the first node that is not layer backed
-static ASDisplayNode *ASFirstNonLayerBackedSupernodeForNode(ASDisplayNode *node) {
-  ASDisplayNode *containerNode = node;
-  while (containerNode.isLayerBacked) {
-    containerNode = containerNode.supernode;
-  }
-  return containerNode;
-}
-
 /// Uses the given layout, node and container node to calculate the accessibiliyty frame for the given ASTextNodeAccessiblityElement in screen coordinates.
 static void ASUpdateAccessibilityFrame(ASTextNodeAccessiblityElement *accessibilityElement, ASTextLayout *layout, ASDisplayNode * _Nullable containerNode, ASDisplayNode *node) {
-  containerNode = containerNode ?:  ASFirstNonLayerBackedSupernodeForNode(node);
+  containerNode = containerNode ?:  [node firstNonLayerNode];
   CGRect textLayoutFrame = CGRectZero;
   NSRange accessibilityRange = accessibilityElement.accessibilityRange;
   if (accessibilityRange.location == NSNotFound) {
@@ -357,9 +349,21 @@ static void ASUpdateAccessibilityFrame(ASTextNodeAccessiblityElement *accessibil
   accessibilityElement.accessibilityFrame = UIAccessibilityConvertFrameToScreenCoordinates(accessibilityFrame, containerNode.view);
 }
 
+- (NSInteger)accessibilityElementCount
+{
+  if (!ASActivateExperimentalFeature(ASExperimentalTextNode2A11YContainer)) {
+    return [super accessibilityElementCount];
+  }
+
+  return self.accessibilityElements.count;
+}
 
 - (NSArray *)accessibilityElements
 {
+  if (!ASActivateExperimentalFeature(ASExperimentalTextNode2A11YContainer)) {
+    return [super accessibilityElements];
+  }
+
   NSAttributedString *attributedText = _attributedText;
   NSInteger attributedTextLength = attributedText.length;
   if (attributedTextLength == 0) {
@@ -369,13 +373,12 @@ static void ASUpdateAccessibilityFrame(ASTextNodeAccessiblityElement *accessibil
   NSMutableArray<ASTextNodeAccessiblityElement *> *accessibilityElements = [[NSMutableArray alloc] init];
 
   // Search the first node that is not layer backed
-  ASDisplayNode *containerNode = ASFirstNonLayerBackedSupernodeForNode(self);
+  ASDisplayNode *containerNode = [self firstNonLayerNode];
   ASTextLayout *layout = ASTextNodeCompatibleLayoutWithContainerAndText(_textContainer, attributedText);
 
   // Create an accessibility element to represent the label's text. It's not necessary to specify
   // a accessibilityRange here, as the entirety of the text is being represented.
   ASTextNodeAccessiblityElement *accessibilityElement = [[ASTextNodeAccessiblityElement alloc] initWithAccessibilityContainer:containerNode.view];
-  // TODO(maicki): Should we copy that over as the accessibilityIdentifier will be added twice
   accessibilityElement.accessibilityLabel = self.accessibilityLabel;
   accessibilityElement.accessibilityValue = self.accessibilityValue;
   accessibilityElement.accessibilityTraits = self.accessibilityTraits;
@@ -517,13 +520,13 @@ static void ASUpdateAccessibilityFrame(ASTextNodeAccessiblityElement *accessibil
   // Accessiblity
   self.accessibilityLabel = self.defaultAccessibilityLabel;
 
-if (!ASActivateExperimentalFeature(ASExperimentalTextNode2A11YContainer)) {
-  // We update the isAccessibilityElement setting if this node is not switching between strings.
-  if (oldAttributedText.length == 0 || length == 0) {
-    // We're an accessibility element by default if there is a string.
-    self.isAccessibilityElement = (length != 0);
+  if (!ASActivateExperimentalFeature(ASExperimentalTextNode2A11YContainer)) {
+    // We update the isAccessibilityElement setting if this node is not switching between strings.
+    if (oldAttributedText.length == 0 || length == 0) {
+      // We're an accessibility element by default if there is a string.
+      self.isAccessibilityElement = (length != 0);
+    }
   }
-}
 
 #if AS_TEXTNODE2_RECORD_ATTRIBUTED_STRINGS
   [ASTextNode _registerAttributedText:_attributedText];

@@ -129,13 +129,15 @@ static void CollectAccessibilityElementsForLayerBackedOrRasterizedNode(ASDisplay
   ASDisplayNodePerformBlockOnEveryNodeBFS(node, ^(ASDisplayNode * _Nonnull currentNode) {
     if (currentNode != containerNode) {
       if (currentNode.isAccessibilityElement) {
-        // For every subnode that is layer backed or it's supernode has subtree rasterization enabled
-        // we have to create a UIAccessibilityElement as no view for this node exists
+        // For every subnode that is an accessibility element and is layer backed
+        // or it's supernode has subtree rasterization enabled, create a
+        // UIAccessibilityElement as no view for this node exists
         UIAccessibilityElement *accessibilityElement = [ASAccessibilityElement accessibilityElementWithContainerView:container node:currentNode];
         [elements addObject:accessibilityElement];
       } else if (ASIsLeafNode(currentNode)) {
-        // In leaf nodes that are layer backed and acting as accessibility container we call
-        // through to the accessibilityElements method.
+        // In leaf nodes that are layer backed and acting as accessibility
+        // container (isAccessibilityElement == NO we call through to the
+        // accessibilityElements to collect all accessibility elements of this node
         if (ASActivateExperimentalFeature(ASExperimentalTextNode2A11YContainer)) {
           [elements addObjectsFromArray:currentNode.accessibilityElements];
         }
@@ -144,7 +146,7 @@ static void CollectAccessibilityElementsForLayerBackedOrRasterizedNode(ASDisplay
   });
 }
 
-/// Called from the usual accessibility elements collection function for a container to collect all subnodes accessibilityLabels
+/// Called from the usual accessibility elements collection function for nodes that are returning YES for isAccessibilityContainer to collect all subnodes accessibilityLabels and custom actions for nodes that have interactive accessibility traits 
 static void AggregateSublabelsOrCustomActionsForContainerNode(ASDisplayNode *containerNode, UIView *containerView, NSMutableArray *elements) {
   UIAccessibilityElement *accessiblityElement = [ASAccessibilityElement accessibilityElementWithContainerView:containerView node:containerNode];
 
@@ -254,7 +256,7 @@ static void CollectAccessibilityElements(ASDisplayNode *node, NSMutableArray *el
       // Go down the hierarchy for layer backed subnodes which are also accessibility container
       // and collect all of the UIAccessibilityElement
       CollectAccessibilityElementsForLayerBackedOrRasterizedNode(subnode, node, node.view, elements);
-    } else if ([subnode accessibilityElementCount] > 0) {
+    } else if (subnode.accessibilityElementCount > 0) {
       // _ASDisplayView is itself a UIAccessibilityContainer just add it, UIKit will call the accessiblity
       // methods of the nodes _ASDisplayView
       [elements addObject:subnode.view];
