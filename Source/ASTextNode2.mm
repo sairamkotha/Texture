@@ -375,9 +375,8 @@ static void ASUpdateAccessibilityFrame(ASTextNodeAccessiblityElement *accessibil
   // Create an accessibility element to represent the label's text. It's not necessary to specify
   // a accessibilityRange here, as the entirety of the text is being represented.
   ASTextNodeAccessiblityElement *accessibilityElement = [[ASTextNodeAccessiblityElement alloc] initWithAccessibilityContainer:containerNode.view];
-  accessibilityElement.accessibilityIdentifier = self.accessibilityIdentifier;
+  // TODO(maicki): Should we copy that over as the accessibilityIdentifier will be added twice
   accessibilityElement.accessibilityLabel = self.accessibilityLabel;
-  accessibilityElement.accessibilityHint = self.accessibilityHint;
   accessibilityElement.accessibilityValue = self.accessibilityValue;
   accessibilityElement.accessibilityTraits = self.accessibilityTraits;
   if (AS_AVAILABLE_IOS_TVOS(11, 11)) {
