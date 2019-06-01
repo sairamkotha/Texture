@@ -30,6 +30,23 @@
 #import <AsyncDisplayKit/ASTextLayout.h>
 #import <AsyncDisplayKit/ASThread.h>
 
+@interface ASTextNodeAccessiblityElement : UIAccessibilityElement
+@property (assign) NSRange accessibilityRange;
+@end
+
+@implementation ASTextNodeAccessiblityElement
+
+- (instancetype)initWithAccessibilityContainer:(id)container
+{
+  self = [super initWithAccessibilityContainer:container];
+  if (self) {
+    _accessibilityRange = NSMakeRange(NSNotFound, 0);
+  }
+  return self;
+}
+
+@end
+
 @interface ASTextCacheValue : NSObject {
   @package
   AS::Mutex _m;
@@ -213,7 +230,7 @@ static NSArray *DefaultLinkAttributeNames() {
     self.linkAttributeNames = DefaultLinkAttributeNames();
 
     // Accessibility
-    self.isAccessibilityElement = YES;
+    self.isAccessibilityElement = !ASActivateExperimentalFeature(ASExperimentalTextNode2A11YContainer);
     self.accessibilityTraits = self.defaultAccessibilityTraits;
     
     // Placeholders
@@ -312,6 +329,85 @@ static NSArray *DefaultLinkAttributeNames() {
 {
   return UIAccessibilityTraitStaticText;
 }
+
+/// Walks up the node tree and searches for the first node that is not layer backed
+static ASDisplayNode *ASFirstNonLayerBackedSupernodeForNode(ASDisplayNode *node) {
+  ASDisplayNode *containerNode = node;
+  while (containerNode.isLayerBacked) {
+    containerNode = containerNode.supernode;
+  }
+  return containerNode;
+}
+
+/// Uses the given layout, node and container node to calculate the accessibiliyty frame for the given ASTextNodeAccessiblityElement in screen coordinates.
+static void ASUpdateAccessibilityFrame(ASTextNodeAccessiblityElement *accessibilityElement, ASTextLayout *layout, ASDisplayNode * _Nullable containerNode, ASDisplayNode *node) {
+  containerNode = containerNode ?:  ASFirstNonLayerBackedSupernodeForNode(node);
+  CGRect textLayoutFrame = CGRectZero;
+  NSRange accessibilityRange = accessibilityElement.accessibilityRange;
+  if (accessibilityRange.location == NSNotFound) {
+    // If no accessibilityRange was specified (as is done for the text element), just use the
+    // label's range and clampt to the visible range otherwise the returned rect would be invalid.
+    NSRange range = NSMakeRange(0, accessibilityElement.accessibilityLabel.length);
+    range = NSIntersectionRange(range, layout.visibleRange);
+    textLayoutFrame = [layout rectForRange:[ASTextRange rangeWithRange:range]];
+  } else {
+    textLayoutFrame = [layout rectForRange:[ASTextRange rangeWithRange:accessibilityRange]];
+  }
+  CGRect accessibilityFrame = [node convertRect:textLayoutFrame toNode:containerNode];
+  accessibilityElement.accessibilityFrame = UIAccessibilityConvertFrameToScreenCoordinates(accessibilityFrame, containerNode.view);
+}
+
+
+- (NSArray *)accessibilityElements
+{
+  NSAttributedString *attributedText = _attributedText;
+  NSInteger attributedTextLength = attributedText.length;
+  if (attributedTextLength == 0) {
+    return @[];
+  }
+
+  NSMutableArray<ASTextNodeAccessiblityElement *> *accessibilityElements = [[NSMutableArray alloc] init];
+
+  // Search the first node that is not layer backed
+  ASDisplayNode *containerNode = ASFirstNonLayerBackedSupernodeForNode(self);
+  ASTextLayout *layout = ASTextNodeCompatibleLayoutWithContainerAndText(_textContainer, attributedText);
+
+  // Create an accessibility element to represent the label's text. It's not necessary to specify
+  // a accessibilityRange here, as the entirety of the text is being represented.
+  ASTextNodeAccessiblityElement *accessibilityElement = [[ASTextNodeAccessiblityElement alloc] initWithAccessibilityContainer:containerNode.view];
+  accessibilityElement.accessibilityIdentifier = self.accessibilityIdentifier;
+  accessibilityElement.accessibilityLabel = self.accessibilityLabel;
+  accessibilityElement.accessibilityHint = self.accessibilityHint;
+  accessibilityElement.accessibilityValue = self.accessibilityValue;
+  accessibilityElement.accessibilityTraits = self.accessibilityTraits;
+  if (AS_AVAILABLE_IOS_TVOS(11, 11)) {
+    accessibilityElement.accessibilityAttributedLabel = self.accessibilityAttributedLabel;
+    accessibilityElement.accessibilityAttributedHint = self.accessibilityAttributedHint;
+    accessibilityElement.accessibilityAttributedValue = self.accessibilityAttributedValue;
+  }
+  ASUpdateAccessibilityFrame(accessibilityElement, layout, containerNode, self);
+  [accessibilityElements addObject:accessibilityElement];
+
+  // Collect all links as accessiblity items
+  for (NSString *linkAttributeName in _linkAttributeNames) {
+    [attributedText enumerateAttribute:linkAttributeName inRange:NSMakeRange(0, attributedTextLength) options:NSAttributedStringEnumerationLongestEffectiveRangeNotRequired usingBlock:^(id  _Nullable value, NSRange range, BOOL * _Nonnull stop) {
+      if (value == nil) {
+        return;
+      }
+      ASTextNodeAccessiblityElement *accessibilityElement = [[ASTextNodeAccessiblityElement alloc] initWithAccessibilityContainer:self];
+      accessibilityElement.accessibilityTraits = UIAccessibilityTraitLink;;
+      accessibilityElement.accessibilityLabel = [attributedText.string substringWithRange:range];
+      accessibilityElement.accessibilityRange = range;
+      if (AS_AVAILABLE_IOS_TVOS(11, 11)) {
+        accessibilityElement.accessibilityAttributedLabel = [attributedText attributedSubstringFromRange:range];
+      }
+      ASUpdateAccessibilityFrame(accessibilityElement, layout, containerNode, self);
+      [accessibilityElements addObject:accessibilityElement];
+    }];
+  }
+  return accessibilityElements;
+}
+
 
 #pragma mark - Layout and Sizing
 
@@ -421,12 +517,14 @@ static NSArray *DefaultLinkAttributeNames() {
 
   // Accessiblity
   self.accessibilityLabel = self.defaultAccessibilityLabel;
-  
+
+if (!ASActivateExperimentalFeature(ASExperimentalTextNode2A11YContainer)) {
   // We update the isAccessibilityElement setting if this node is not switching between strings.
   if (oldAttributedText.length == 0 || length == 0) {
     // We're an accessibility element by default if there is a string.
     self.isAccessibilityElement = (length != 0);
   }
+}
 
 #if AS_TEXTNODE2_RECORD_ATTRIBUTED_STRINGS
   [ASTextNode _registerAttributedText:_attributedText];
