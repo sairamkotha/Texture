@@ -146,7 +146,7 @@ static void CollectAccessibilityElementsForLayerBackedOrRasterizedNode(ASDisplay
   });
 }
 
-/// Called from the usual accessibility elements collection function for nodes that are returning YES for isAccessibilityContainer to collect all subnodes accessibilityLabels and custom actions for nodes that have interactive accessibility traits 
+/// Called from the usual accessibility elements collection function for nodes that are returning YES for isAccessibilityContainer to collect all subnodes accessibilityLabels and custom actions for nodes that have interactive accessibility traits
 static void AggregateSublabelsOrCustomActionsForContainerNode(ASDisplayNode *containerNode, UIView *containerView, NSMutableArray *elements) {
   UIAccessibilityElement *accessiblityElement = [ASAccessibilityElement accessibilityElementWithContainerView:containerView node:containerNode];
 
@@ -299,12 +299,9 @@ static void CollectAccessibilityElements(ASDisplayNode *node, NSMutableArray *el
 
 @implementation ASDisplayNode (AccessibilityInternal)
 
-- (void)setAccessibilityElements:(NSArray *)accessibilityElements
+- (NSInteger)accessibilityElementCount
 {
-  // Bridge through calling to view to invalidate accessibility elements
-  // If the view is layer backed it's likely a leaf node too what means this will be a no op
-  // but the caching will happening on the next non layer node anyway.
-  [_view setAccessibilityElements:accessibilityElements];
+  return [_view accessibilityElementCount];
 }
 
 - (NSArray *)accessibilityElements

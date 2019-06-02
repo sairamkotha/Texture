@@ -1301,6 +1301,12 @@ nodeProperty = nodeValueExpr; _setToViewOnly(viewAndPendingViewStateProperty, vi
 }
 #endif
 
+- (void)setAccessibilityElements:(NSArray *)accessibilityElements
+{
+  _bridge_prologue_write;
+  _setToViewOnly(accessibilityElements, accessibilityElements);
+}
+
 - (void)setAccessibilityActivationPoint:(CGPoint)accessibilityActivationPoint
 {
   _bridge_prologue_write;
