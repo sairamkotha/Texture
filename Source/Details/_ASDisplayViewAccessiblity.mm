@@ -17,6 +17,7 @@
 #import <AsyncDisplayKit/ASDisplayNode+Ancestry.h>
 #import <AsyncDisplayKit/ASDisplayNodeInternal.h>
 #import <AsyncDisplayKit/ASTableNode.h>
+#import <AsyncDisplayKit/ASTextNode.h>
 
 #import <queue>
 
@@ -101,9 +102,16 @@ static void SortAccessibilityElements(NSMutableArray *elements)
 
 #pragma mark - _ASDisplayView / UIAccessibilityContainer
 
+typedef enum : NSUInteger {
+  ASAccessibilityCustomActionTypeNode,
+  ASAccessibilityCustomActionTypeLink,
+} ASAccessibilityCustomActionType;
+
 @interface ASAccessibilityCustomAction : UIAccessibilityCustomAction<ASAccessibilityElementPositioning>
 
+@property (nonatomic) ASAccessibilityCustomActionType type;
 @property (nonatomic) ASDisplayNode *node;
+@property (nonatomic, nullable) id value;
 
 @end
 
@@ -179,6 +187,7 @@ static void AggregateSublabelsOrCustomActionsForContainerNode(ASDisplayNode *con
     if (node.accessibilityLabel.length > 0) {
       if (node.accessibilityTraits & InteractiveAccessibilityTraitsMask()) {
         ASAccessibilityCustomAction *action = [[ASAccessibilityCustomAction alloc] initWithName:node.accessibilityLabel target:node selector:@selector(performAccessibilityCustomAction:)];
+        action.type = ASAccessibilityCustomActionTypeNode;
         action.node = node;
         node.acessibilityCustomAction = action;
         [actions addObject:action];
@@ -195,6 +204,30 @@ static void AggregateSublabelsOrCustomActionsForContainerNode(ASDisplayNode *con
   }
 
   SortAccessibilityElements(labeledNodes);
+
+  // Go through all labeled notes accessibility actions and search for links to expose
+  for (ASAccessibilityElement *labeledNode in labeledNodes) {
+    if (![labeledNode.node respondsToSelector:@selector(attributedText)]) {
+      continue;
+    }
+
+    for (NSString *linkAttributeName in [(ASTextNode *)labeledNode linkAttributeNames]) {
+      NSAttributedString *attributedText = [(ASTextNode *)labeledNode.node attributedText];
+      [attributedText enumerateAttribute:linkAttributeName inRange:NSMakeRange(0, attributedText.length) options:NSAttributedStringEnumerationLongestEffectiveRangeNotRequired usingBlock:^(id  _Nullable value, NSRange range, BOOL * _Nonnull stop) {
+        if (value == nil) {
+          return;
+        }
+
+        // TODO(maicki): Add a value to the custom action which can be from a link
+        ASAccessibilityCustomAction *action = [[ASAccessibilityCustomAction alloc] initWithName:[attributedText attributedSubstringFromRange:range].string target:node selector:@selector(performAccessibilityCustomAction:)];
+        action.type = ASAccessibilityCustomActionTypeLink;
+        action.value = value;
+        action.node = labeledNode.node;
+        [actions addObject:action];
+    }];
+    }
+  }
+
 
   if (AS_AVAILABLE_IOS_TVOS(11, 11)) {
     NSArray *attributedLabels = [labeledNodes valueForKey:@"accessibilityAttributedLabel"];

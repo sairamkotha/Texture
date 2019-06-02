@@ -51,6 +51,8 @@
   self = [super init];
   
   if (self) {
+
+    self.isAccessibilityContainer = YES;
     
     _photoModel              = photo;
     
