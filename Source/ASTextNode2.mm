@@ -333,7 +333,7 @@ static NSArray *DefaultLinkAttributeNames() {
 
 /// Uses the given layout, node and container node to calculate the accessibiliyty frame for the given ASTextNodeAccessiblityElement in screen coordinates.
 static void ASUpdateAccessibilityFrame(ASTextNodeAccessiblityElement *accessibilityElement, ASTextLayout *layout, ASDisplayNode * _Nullable containerNode, ASDisplayNode *node) {
-  containerNode = containerNode ?:  [node firstNonLayerNode];
+  containerNode = containerNode ?:  node.firstNonLayerNode;
   CGRect textLayoutFrame = CGRectZero;
   NSRange accessibilityRange = accessibilityElement.accessibilityRange;
   if (accessibilityRange.location == NSNotFound) {
@@ -373,7 +373,7 @@ static void ASUpdateAccessibilityFrame(ASTextNodeAccessiblityElement *accessibil
   NSMutableArray<ASTextNodeAccessiblityElement *> *accessibilityElements = [[NSMutableArray alloc] init];
 
   // Search the first node that is not layer backed
-  ASDisplayNode *containerNode = [self firstNonLayerNode];
+  ASDisplayNode *containerNode = self.firstNonLayerNode;
   ASTextLayout *layout = ASTextNodeCompatibleLayoutWithContainerAndText(_textContainer, attributedText);
 
   // Create an accessibility element to represent the label's text. It's not necessary to specify

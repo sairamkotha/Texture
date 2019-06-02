@@ -53,7 +53,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  * Returns the first non layer backed supernode
  */
-- (ASDisplayNode *)firstNonLayerNode;
+@property (readonly) ASDisplayNode *firstNonLayerNode;
 
 @end
 

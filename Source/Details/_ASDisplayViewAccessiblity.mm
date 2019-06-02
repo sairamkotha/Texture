@@ -91,10 +91,10 @@ static void SortAccessibilityElements(NSMutableArray *elements)
 
 - (CGRect)accessibilityFrame
 {
-  ASDisplayNode *supernode = [self.node firstNonLayerNode];
+  ASDisplayNode *supernode = _node.firstNonLayerNode;
   ASDisplayNodeAssert(!supernode.isLayerBacked, @"No non-layerbacked node found.");
 
-  return [self.node.layer convertRect:self.node.bounds toLayer:ASFindWindowOfLayer(self.node.layer).layer];
+  return [_node.layer convertRect:_node.bounds toLayer:ASFindWindowOfLayer(_node.layer).layer];
 }
 
 @end
@@ -111,10 +111,10 @@ static void SortAccessibilityElements(NSMutableArray *elements)
 
 - (CGRect)accessibilityFrame
 {
-  ASDisplayNode *supernode = [self.node firstNonLayerNode];
+  ASDisplayNode *supernode = _node.firstNonLayerNode;
   ASDisplayNodeAssert(!supernode.isLayerBacked, @"No non-layerbacked node found.");
 
-  return [self.node.layer convertRect:self.node.bounds toLayer:ASFindWindowOfLayer(self.node.layer).layer];
+  return [_node.layer convertRect:_node.bounds toLayer:ASFindWindowOfLayer(_node.layer).layer];
 }
 
 @end
@@ -198,13 +198,15 @@ static void AggregateSublabelsOrCustomActionsForContainerNode(ASDisplayNode *con
 
   if (AS_AVAILABLE_IOS_TVOS(11, 11)) {
     NSArray *attributedLabels = [labeledNodes valueForKey:@"accessibilityAttributedLabel"];
-    NSMutableAttributedString *attributedLabel = [NSMutableAttributedString new];
-    [attributedLabels enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+    NSMutableAttributedString *attributedLabel = [[NSMutableAttributedString alloc] init];
+    [attributedLabel beginEditing];
+    [attributedLabels enumerateObjectsUsingBlock:^(NSAttributedString * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
       if (idx != 0) {
         [attributedLabel appendAttributedString:[[NSAttributedString alloc] initWithString:@", "]];
       }
-      [attributedLabel appendAttributedString:(NSAttributedString *)obj];
+      [attributedLabel appendAttributedString:obj];
     }];
+    [attributedLabel endEditing];
     accessiblityElement.accessibilityAttributedLabel = attributedLabel;
   } else {
     NSArray *labels = [labeledNodes valueForKey:@"accessibilityLabel"];
