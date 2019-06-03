@@ -425,4 +425,35 @@
   [self testTextNode2AccessibilityTraits];
 }
 
+- (void)testExposingLinkCustomActionsForAccessibilityContainer
+{
+  ASDisplayNode *container = [[ASDisplayNode alloc] init];
+  container.frame = CGRectMake(50, 50, 200, 600);
+  container.backgroundColor = [UIColor grayColor];
+
+  // Set container as accessibility container
+  container.isAccessibilityContainer = YES;
+
+  ASTextNode2 *text1 = [[ASTextNode2 alloc] init];
+  text1.layerBacked = NO; // No layer backed due to links
+  text1.frame = CGRectMake(50, 100, 200, 200);
+  [container addSubnode:text1];
+
+  NSString *link = @"https://texturegroup.com";
+  NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"Texture Website: %@", link]];
+  NSRange linkRange = [attributedText.string rangeOfString:link];
+  [attributedText addAttribute:NSLinkAttributeName value:link range:linkRange];
+
+  text1.attributedText = attributedText;
+  text1.accessibilityLabel = attributedText.string;
+
+  (void)[container.view accessibilityElements];
+  NSArray<UIAccessibilityCustomAction *> *accessibilityActions = container.view.accessibilityCustomActions;
+  XCTAssertEqual(accessibilityActions.count, 1, @"Link should be exposed as accessibility element");
+//  XCTAssertEqual(accessibilityElements.count, 2, @"Link should be exposed as accessibility element");
+//
+//  XCTAssertEqualObjects([accessibilityElements[0] accessibilityLabel], attributedText.string, @"First accessibility element should be the full text");
+//  XCTAssertEqualObjects([accessibilityElements[1] accessibilityLabel], link, @"Second accessibility element should be the link");
+}
+
 @end

@@ -9,6 +9,7 @@
 
 #import "PhotoCellNode.h"
 
+#import <AsyncDisplayKit/_ASDisplayViewAccessiblity.h>
 #import <AsyncDisplayKit/AsyncDisplayKit.h>
 #import <AsyncDisplayKit/ASDisplayNode+Beta.h>
 
@@ -28,6 +29,28 @@
 #define InsetForAvatar UIEdgeInsetsMake(HORIZONTAL_BUFFER, 0, HORIZONTAL_BUFFER, HORIZONTAL_BUFFER)
 #define InsetForHeader UIEdgeInsetsMake(0, HORIZONTAL_BUFFER, 0, HORIZONTAL_BUFFER)
 #define InsetForFooter UIEdgeInsetsMake(VERTICAL_BUFFER, HORIZONTAL_BUFFER, VERTICAL_BUFFER, HORIZONTAL_BUFFER)
+
+// Expose method of UIAccessibilityCustomAction from Texture
+@interface UIAccessibilityCustomAction(Additions)
+- (id)value;
+@end
+
+// Category to forward accessibility custom actions to the delegate
+
+@interface ASTextNode2(UIAccessibilityCustomAction)
+
+- (BOOL)performAccessibilityCustomAction:(UIAccessibilityCustomAction *)action;
+
+@end
+
+@implementation ASTextNode2(UIAccessibilityCustomAction)
+
+- (BOOL)performAccessibilityCustomAction:(UIAccessibilityCustomAction *)action
+{
+  return [(ASDisplayNode *)self.delegate performAccessibilityCustomAction:action];
+}
+
+@end
 
 @interface PhotoCellNode () <ASNetworkImageNodeDelegate>
 @end
@@ -249,13 +272,6 @@
 }
 #endif
 
-#pragma mark - Instance Methods
-
-- (void)didEnterPreloadState
-{
-  [super didEnterPreloadState];
-}
-
 #pragma mark - Network Image Delegate
 
 - (void)imageNode:(ASNetworkImageNode *)imageNode didLoadImage:(UIImage *)image info:(ASNetworkImageLoadInfo *)info
@@ -274,9 +290,28 @@
 - (ASTextNode *)createLayerBackedTextNodeWithString:(NSAttributedString *)attributedString
 {
   ASTextNode *textNode      = [[ASTextNode alloc] init];
-  textNode.layerBacked      = YES;
   textNode.attributedText = attributedString;
+  textNode.delegate = (id<ASTextNodeDelegate>)self; // Link handling
+  BOOL supportsLayerBacking = [textNode supportsLayerBacking];
+  textNode.layerBacked      = supportsLayerBacking;
+  textNode.userInteractionEnabled = !supportsLayerBacking;
   return textNode;
+}
+
+- (BOOL)performAccessibilityCustomAction:(UIAccessibilityCustomAction *)action
+{
+  if (action.accessibilityTraits & (UIAccessibilityTraitLink)) {
+    if ([action respondsToSelector:@selector(value)]) {
+      NSLog(@"Handle link: %@", action.value);
+      return YES;
+    }
+  }
+  return NO;
+}
+
+- (void)textNode:(ASTextNode *)textNode tappedLinkAttribute:(NSString *)attribute value:(id)value atPoint:(CGPoint)point textRange:(NSRange)textRange
+{
+  NSLog(@"Handle link: %@", value);
 }
 
 - (void)setupYogaLayoutIfNeeded
