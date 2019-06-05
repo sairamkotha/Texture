@@ -101,9 +101,7 @@
 		3917EBD41E9C2FC400D04A01 /* _ASCollectionReusableView.h in Headers */ = {isa = PBXBuildFile; fileRef = 3917EBD21E9C2FC400D04A01 /* _ASCollectionReusableView.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		3917EBD51E9C2FC400D04A01 /* _ASCollectionReusableView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3917EBD31E9C2FC400D04A01 /* _ASCollectionReusableView.mm */; };
 		3C9C128519E616EF00E942A0 /* ASTableViewTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3C9C128419E616EF00E942A0 /* ASTableViewTests.mm */; };
-		455851C122A7C02700401FF2 /* IGListAdapter+AsyncDisplayKit.h in Sources */ = {isa = PBXBuildFile; fileRef = CCE04B201E313EB9006AEBBB /* IGListAdapter+AsyncDisplayKit.h */; };
 		455851C222A7C02700401FF2 /* IGListAdapter+AsyncDisplayKit.mm in Sources */ = {isa = PBXBuildFile; fileRef = CCE04B211E313EB9006AEBBB /* IGListAdapter+AsyncDisplayKit.mm */; };
-		455851C322A7C02700401FF2 /* ASIGListAdapterBasedDataSource.h in Sources */ = {isa = PBXBuildFile; fileRef = CCBD05DF1E4147B000D18509 /* ASIGListAdapterBasedDataSource.h */; };
 		455851C422A7C02700401FF2 /* ASIGListAdapterBasedDataSource.mm in Sources */ = {isa = PBXBuildFile; fileRef = CCBD05DE1E4147B000D18509 /* ASIGListAdapterBasedDataSource.mm */; };
 		471D04B1224CB98600649215 /* ASImageNodeBackingSizeTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = 471D04B0224CB98600649215 /* ASImageNodeBackingSizeTests.mm */; };
 		4E9127691F64157600499623 /* ASRunLoopQueueTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4E9127681F64157600499623 /* ASRunLoopQueueTests.mm */; };
@@ -2369,9 +2367,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				455851C122A7C02700401FF2 /* IGListAdapter+AsyncDisplayKit.h in Sources */,
 				455851C222A7C02700401FF2 /* IGListAdapter+AsyncDisplayKit.mm in Sources */,
-				455851C322A7C02700401FF2 /* ASIGListAdapterBasedDataSource.h in Sources */,
 				455851C422A7C02700401FF2 /* ASIGListAdapterBasedDataSource.mm in Sources */,
 				E5B225291F1790EE001E1431 /* ASHashing.mm in Sources */,
 				DEB8ED7C1DD003D300DBDE55 /* ASLayoutTransition.mm in Sources */,
