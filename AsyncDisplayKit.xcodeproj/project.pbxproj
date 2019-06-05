@@ -191,8 +191,6 @@
 		909C4C761F09C98B00D6B76F /* ASTextNode2.mm in Sources */ = {isa = PBXBuildFile; fileRef = 909C4C741F09C98B00D6B76F /* ASTextNode2.mm */; };
 		90FC784F1E4BFE1B00383C5A /* ASDisplayNode+Yoga.mm in Sources */ = {isa = PBXBuildFile; fileRef = 90FC784E1E4BFE1B00383C5A /* ASDisplayNode+Yoga.mm */; };
 		92DD2FE61BF4D05E0074C9DD /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92DD2FE51BF4D05E0074C9DD /* MapKit.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
-		92DD2FE71BF4D0850074C9DD /* ASMapNode.mm in Sources */ = {isa = PBXBuildFile; fileRef = 92DD2FE21BF4B97E0074C9DD /* ASMapNode.mm */; };
-		92DD2FE81BF4D0A80074C9DD /* ASMapNode.h in Headers */ = {isa = PBXBuildFile; fileRef = 92DD2FE11BF4B97E0074C9DD /* ASMapNode.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9644CFE02193777C00213478 /* ASThrashUtility.m in Sources */ = {isa = PBXBuildFile; fileRef = 9644CFDF2193777C00213478 /* ASThrashUtility.m */; };
 		9692B4FF219E12370060C2C3 /* ASCollectionViewThrashTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9692B4FE219E12370060C2C3 /* ASCollectionViewThrashTests.mm */; };
 		9C49C3701B853961000B0DD5 /* ASStackLayoutElement.h in Headers */ = {isa = PBXBuildFile; fileRef = 9C49C36E1B853957000B0DD5 /* ASStackLayoutElement.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -2105,7 +2103,6 @@
 				34EFC7711B701CFF00AD841F /* ASStackLayoutSpec.h in Headers */,
 				CCA282C01E9EAE010037E8B7 /* ASTip.h in Headers */,
 				2767E9411BB19BD600EA9B77 /* ASViewController.h in Headers */,
-				92DD2FE81BF4D0A80074C9DD /* ASMapNode.h in Headers */,
 				9C6BB3B31B8CC9C200F13F52 /* ASAbsoluteLayoutElement.h in Headers */,
 				34EFC7731B701D0700AD841F /* ASAbsoluteLayoutSpec.h in Headers */,
 				B350620A1B010EFD0018CF92 /* ASTableView.h in Headers */,
@@ -2385,7 +2382,6 @@
 				CCCCCCE41EC3EF060087FE10 /* NSParagraphStyle+ASText.mm in Sources */,
 				8BBBAB8D1CEBAF1E00107FC6 /* ASDefaultPlaybackButton.mm in Sources */,
 				B30BF6541C59D889004FCD53 /* ASLayoutManager.mm in Sources */,
-				92DD2FE71BF4D0850074C9DD /* ASMapNode.mm in Sources */,
 				CCA282B91E9EA8E40037E8B7 /* AsyncDisplayKit+Tips.mm in Sources */,
 				636EA1A51C7FF4EF00EE152F /* ASDefaultPlayButton.mm in Sources */,
 				B350623D1B010EFD0018CF92 /* _ASAsyncTransaction.mm in Sources */,
