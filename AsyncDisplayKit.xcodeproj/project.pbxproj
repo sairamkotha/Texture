@@ -105,6 +105,11 @@
 		455851C422A7C02700401FF2 /* ASIGListAdapterBasedDataSource.mm in Sources */ = {isa = PBXBuildFile; fileRef = CCBD05DE1E4147B000D18509 /* ASIGListAdapterBasedDataSource.mm */; };
 		455851C622A7DABC00401FF2 /* IGListKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 455851C522A7DABC00401FF2 /* IGListKit.framework */; };
 		455851C722A7DC7B00401FF2 /* ASIGListAdapterBasedDataSource.h in Headers */ = {isa = PBXBuildFile; fileRef = CCBD05DF1E4147B000D18509 /* ASIGListAdapterBasedDataSource.h */; };
+		455851DA22A7EAB900401FF2 /* ASMapNode.mm in Sources */ = {isa = PBXBuildFile; fileRef = 92DD2FE21BF4B97E0074C9DD /* ASMapNode.mm */; };
+		455851DB22A7EAC000401FF2 /* ASMapNode.h in Headers */ = {isa = PBXBuildFile; fileRef = 92DD2FE11BF4B97E0074C9DD /* ASMapNode.h */; };
+		455851DF22A7EC5C00401FF2 /* PINOperation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 455851DC22A7EC5C00401FF2 /* PINOperation.framework */; };
+		455851E022A7EC5C00401FF2 /* PINCache.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 455851DD22A7EC5C00401FF2 /* PINCache.framework */; };
+		455851E122A7EC5C00401FF2 /* PINRemoteImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 455851DE22A7EC5C00401FF2 /* PINRemoteImage.framework */; };
 		471D04B1224CB98600649215 /* ASImageNodeBackingSizeTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = 471D04B0224CB98600649215 /* ASImageNodeBackingSizeTests.mm */; };
 		4E9127691F64157600499623 /* ASRunLoopQueueTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4E9127681F64157600499623 /* ASRunLoopQueueTests.mm */; };
 		509E68601B3AED8E009B9150 /* ASScrollDirection.mm in Sources */ = {isa = PBXBuildFile; fileRef = 205F0E111B371BD7007741D0 /* ASScrollDirection.mm */; };
@@ -678,6 +683,9 @@
 		3917EBD31E9C2FC400D04A01 /* _ASCollectionReusableView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = _ASCollectionReusableView.mm; sourceTree = "<group>"; };
 		3C9C128419E616EF00E942A0 /* ASTableViewTests.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; lineEnding = 0; path = ASTableViewTests.mm; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		455851C522A7DABC00401FF2 /* IGListKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IGListKit.framework; path = Carthage/Build/iOS/IGListKit.framework; sourceTree = "<group>"; };
+		455851DC22A7EC5C00401FF2 /* PINOperation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PINOperation.framework; path = Carthage/Build/iOS/PINOperation.framework; sourceTree = "<group>"; };
+		455851DD22A7EC5C00401FF2 /* PINCache.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PINCache.framework; path = Carthage/Build/iOS/PINCache.framework; sourceTree = "<group>"; };
+		455851DE22A7EC5C00401FF2 /* PINRemoteImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PINRemoteImage.framework; path = Carthage/Build/iOS/PINRemoteImage.framework; sourceTree = "<group>"; };
 		464052191A3F83C40061C0BA /* ASDataController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = ASDataController.h; sourceTree = "<group>"; };
 		4640521A1A3F83C40061C0BA /* ASDataController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; lineEnding = 0; path = ASDataController.mm; sourceTree = "<group>"; };
 		4640521B1A3F83C40061C0BA /* ASTableLayoutController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASTableLayoutController.h; sourceTree = "<group>"; };
@@ -1084,17 +1092,20 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				455851E122A7EC5C00401FF2 /* PINRemoteImage.framework in Frameworks */,
 				CC36C19C218B847400232F23 /* CoreMedia.framework in Frameworks */,
 				CC36C19A218B846F00232F23 /* CoreLocation.framework in Frameworks */,
 				CC36C198218B846300232F23 /* QuartzCore.framework in Frameworks */,
 				455851C622A7DABC00401FF2 /* IGListKit.framework in Frameworks */,
 				CC36C196218B845B00232F23 /* AVFoundation.framework in Frameworks */,
+				455851E022A7EC5C00401FF2 /* PINCache.framework in Frameworks */,
 				CC36C194218B844800232F23 /* Foundation.framework in Frameworks */,
 				CC36C193218B842E00232F23 /* CoreGraphics.framework in Frameworks */,
 				CC36C191218B841A00232F23 /* CoreText.framework in Frameworks */,
 				CC36C18F218B841600232F23 /* UIKit.framework in Frameworks */,
 				92DD2FE61BF4D05E0074C9DD /* MapKit.framework in Frameworks */,
 				B350625E1B0111780018CF92 /* AssetsLibrary.framework in Frameworks */,
+				455851DF22A7EC5C00401FF2 /* PINOperation.framework in Frameworks */,
 				B350625D1B0111740018CF92 /* Photos.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1151,6 +1162,9 @@
 		058D09AE195D04C000B7D73C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				455851DD22A7EC5C00401FF2 /* PINCache.framework */,
+				455851DC22A7EC5C00401FF2 /* PINOperation.framework */,
+				455851DE22A7EC5C00401FF2 /* PINRemoteImage.framework */,
 				455851C522A7DABC00401FF2 /* IGListKit.framework */,
 				CC36C19B218B847400232F23 /* CoreMedia.framework */,
 				CC36C199218B846F00232F23 /* CoreLocation.framework */,
@@ -2080,6 +2094,7 @@
 				CCEDDDCF200C42A200FFCD0A /* ASConfigurationDelegate.h in Headers */,
 				E5C347B31ECB40AA00EC4BE4 /* ASTableNode+Beta.h in Headers */,
 				6900C5F41E8072DA00BCD75C /* ASImageNode+Private.h in Headers */,
+				455851DB22A7EAC000401FF2 /* ASMapNode.h in Headers */,
 				68B0277B1C1A79D60041016B /* ASDisplayNode+Beta.h in Headers */,
 				455851C722A7DC7B00401FF2 /* ASIGListAdapterBasedDataSource.h in Headers */,
 				B350622D1B010EFD0018CF92 /* ASScrollDirection.h in Headers */,
@@ -2370,6 +2385,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				455851DA22A7EAB900401FF2 /* ASMapNode.mm in Sources */,
 				455851C222A7C02700401FF2 /* IGListAdapter+AsyncDisplayKit.mm in Sources */,
 				455851C422A7C02700401FF2 /* ASIGListAdapterBasedDataSource.mm in Sources */,
 				E5B225291F1790EE001E1431 /* ASHashing.mm in Sources */,
